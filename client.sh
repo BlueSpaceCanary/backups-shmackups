@@ -4,24 +4,30 @@
 
 #TODO create help function
 
-while getopts "h?s:i:" opt; do
-    case "$opt" in
-        h|\?)
+while true; do
+    case "$1" in
+        h)
             help
             exit 0
             ;;
         s)
-            REMOTE="$OPTARG"
+            shift
+            REMOTE="$1"
             ;;
         i)
-            KEY="$OPTARG"
+            shift
+            KEY="$1"
             ;;
+        --)
+            shift && break # -- ends options
+            ;;
+        *-) echo "$0: Unrecognized option $1" >&2
+            exit 1
+            ;;
+        *) break
+           ;;
     esac
 done
-
-shift $((OPTIND-1))
-
-[ "$1" = "--" ] && shift # If -- terminated options, shift it off
 
 # Remaining args are all folders to stage
 

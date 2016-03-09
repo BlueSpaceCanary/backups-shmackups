@@ -12,24 +12,30 @@ local S3QLFS=""
 local S3QLDIR=""
 local BAKNAME=$(date +"%Y-%m-%d-%H:%m:%S")
 
-while getopts "h?s:t:" opt; do
-    case "$opt" in
-        h|\?)
+while true; do
+    case $1 in
+        h)
             help
             exit 0
             ;;
         s)
-            S3QLFS="$OPTARG"
+            shift
+            S3QLFS="$1"
             ;;
         t)
-            S3QLDIR="$OPTARG"
+            shift
+            S3QLDIR="$1"
             ;;
+        --)
+            shift && break # -- ends options
+            ;;
+        *-) echo "$0: Unrecognized option $1" >&2
+            exit 1
+            ;;
+        *) break
+           ;;
     esac
 done
-
-shift $((OPTIND-1))
-
-["$1" = "--" ] && shift # If -- terminated options, shift it off
 
 # Remaining args are folders to back up
 
@@ -49,9 +55,16 @@ s3ql() {
     cp -a "$TMPDIR/*" "$S3QLDIR/$BAKNAME"
     fusermount -u "$TMPDIR"
     rm -r "$STAGEDIR"
+    rm -r "$TMPDIR"
     
     umount.s3ql3 "$SQLDIR"
 }
+
+main() {
+    s3ql $@
+}
+
+main $@
 
 
 
