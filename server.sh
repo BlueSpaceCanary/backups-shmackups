@@ -13,6 +13,7 @@ local S3QLDIR=""
 local BAKNAME=$(date +"%Y-%m-%d-%H:%m:%S")
 local STAGING=""
 local ENC_STAGING=false
+local DEBUG=true
 
 while true; do
     case $1 in
@@ -47,9 +48,7 @@ while true; do
     esac
 done
 
-# Remaining args are folders to back up
-
-# Handle s3ql stage. Takes folders to back up as args
+# Handle s3ql stage.
 s3ql() {
     mount.s3ql "$S3QLFS" "$S3QLDIR"
     local TARGET="$S3QLDIR/$BAKNAME"
@@ -63,7 +62,7 @@ s3ql() {
 }
 
 main() {
-    s3ql $@
+    s3ql
 }
 
 main $@
