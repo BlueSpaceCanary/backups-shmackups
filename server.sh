@@ -11,6 +11,8 @@
 local S3QLFS=""
 local S3QLDIR=""
 local BAKNAME=$(date +"%Y-%m-%d-%H:%m:%S")
+local STAGING=""
+local ENC_STAGING=false
 
 while true; do
     case $1 in
@@ -25,6 +27,14 @@ while true; do
         t)
             shift
             S3QLDIR="$1"
+            ;;
+        staging)
+            shift
+            STAGING="$1"
+            ;;
+        enc_staging)
+            shift
+            ENC_STAGING=true
             ;;
         --)
             shift && break # -- ends options
@@ -42,21 +52,13 @@ done
 # Handle s3ql stage. Takes folders to back up as args
 s3ql() {
     mount.s3ql "$S3QLFS" "$S3QLDIR"
-    mkdir "$S3QLDIR/$BAKNAME"
-    STAGEDIR=`mktemp -d /tmp/bak.XXXXXX` || exit 1
-    
-    for folder; do
-        cp -a "$folder" "$STAGEDIR"
+    local TARGET="$S3QLDIR/$BAKNAME"
+    mkdir "$TARGET"
+
+    for folder in "$STAGING/*"; do
+        rsync -a "$folder" "$TARGET"
     done
 
-    TMPDIR=`mktemp -d /tmp/bak.XXXXXX` || exit 1
-
-    encfs --reverse "$STAGEDIR" "$TMPDIR"
-    cp -a "$TMPDIR/*" "$S3QLDIR/$BAKNAME"
-    fusermount -u "$TMPDIR"
-    rm -r "$STAGEDIR"
-    rm -r "$TMPDIR"
-    
     umount.s3ql3 "$SQLDIR"
 }
 
