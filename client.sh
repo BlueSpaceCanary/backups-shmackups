@@ -6,15 +6,15 @@
 
 while true; do
     case "$1" in
-        h)
+        -h|--help)
             help
             exit 0
             ;;
-        s)
+        -s|--remote)
             shift
             REMOTE="$1"
             ;;
-        i)
+        -i|--key)
             shift
             KEY="$1"
             ;;

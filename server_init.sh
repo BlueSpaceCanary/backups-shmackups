@@ -16,19 +16,19 @@ help() {
 
 while true; do
     case "$1" in
-        h|help)
+        -h|--help)
             help
             exit 0
             ;;
-        s3ql)
+        --s3ql)
             shift
             SQLFS="$1"
             ;;
-        staging)
+        --staging)
             shift
             STAGING="$1"
             ;;
-        enc_staging)
+        --enc_staging)
             shift
             ENC_STAGING="$1"
             ;;

@@ -17,23 +17,23 @@ local DEBUG=true
 
 while true; do
     case $1 in
-        h)
+        -h|--help)
             help
             exit 0
             ;;
-        s)
+        --s3ql_fs)
             shift
             S3QLFS="$1"
             ;;
-        t)
+        --s3ql_target)
             shift
             S3QLDIR="$1"
             ;;
-        staging)
+        --staging)
             shift
             STAGING="$1"
             ;;
-        enc_staging)
+        --enc_staging)
             shift
             ENC_STAGING=true
             ;;
