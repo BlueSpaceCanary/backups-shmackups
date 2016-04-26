@@ -20,7 +20,7 @@ while true; do
             ;;
 		--mount)
 			shift
-			MOUNTPT="$1"
+{			MOUNTPT="$1"
 			;;
         --)
             shift && break # -- ends options
@@ -52,7 +52,7 @@ main() {
 
 
 	# We do weeklies on Mondays
-	if [[ "`date +%a`" = "Mon" ]]; then
+	if [[ $(date +%a) = "Mon" ]]; then
 		local WEEKLY="$MOUNTPT/weekly/$DATE"
 		mkdir -p "$WEEKLY"
 		cp -a "$SOURCE" "$WEEKLY"
