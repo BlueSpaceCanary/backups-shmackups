@@ -1,6 +1,8 @@
 #!/bin/bash
 
 AWS_TARGET=""
+
+# Should be an encfs or something like that if you want it encrypted.
 AWS_SOURCE=""
 DRY_RUN=false
 while true; do
