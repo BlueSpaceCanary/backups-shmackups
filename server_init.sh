@@ -1,10 +1,9 @@
 #!/bin/bash
-
 # USAGE: ./server_init.sh
 
-local S3QLFS=""
-local STAGING=""
-local ENC_STAGING=""
+S3QLFS=""
+STAGING=""
+ENC_STAGING=""
 
 help() {
     echo "Performs initial setup for a machine to act as a backup-schmackup server.
@@ -22,7 +21,7 @@ while true; do
             ;;
         --s3ql)
             shift
-            SQLFS="$1"
+            S3QLFS="$1"
             ;;
         --staging)
             shift
@@ -44,7 +43,7 @@ while true; do
 done
 
 main() {
-    # If S3QLFS was specified, create it
+    # If S3QLFS was specified, mount it
     if [ ! -z "$S3QLFS" ]; then
        mkfs.s3ql "$S3QLFS"
     fi
